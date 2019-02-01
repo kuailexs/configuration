@@ -14,25 +14,6 @@
 
 #define MAX_EXPOSURE_TABLE_SIZE    500
 
-/*============================================================================
-DATA TYPES
-============================================================================*/
-
-/*****************************************/
-//0x207  trigger pt for CCT
-/*****************************************/
-typedef struct{
-    unsigned long CCT_start;
-    unsigned long CCT_end;
-} chromatix_CCT_trigger_type;
-
-/******************************************************************************
-    VFE basic struct
-    ******************************************************************************/
-
-/******************************************************************************
-Bad pixel correction data types
-******************************************************************************/
 typedef enum
 {
     LOW_LIGHT = 0,
@@ -47,24 +28,6 @@ typedef enum
     BPC_MAX_LIGHT
 } bpc_light_type;
 
-typedef struct
-{
-    unsigned short even_columns;                // EvenCols
-    unsigned short odd_columns;                 // OddCols
-} chromatix_black_level_offset_type;
-
-/******************************************************************************
-4 Channel Black Level data types
-******************************************************************************/
-
-typedef struct
-{
-    unsigned short                       black_even_row_even_col;                 // BlackEvenRowEvenCol
-    unsigned short                       black_even_row_odd_col;                  // BlackEvenRowOddCol
-    unsigned short                       black_odd_row_even_col;                  // BlackOddRowEvenCol
-    unsigned short                       black_odd_row_odd_col;                   // BlackOddRowOddCol
-} chromatix_4_channel_black_level;
-
 typedef enum
 {
     AWB_STATS_LOW_LIGHT = 0,
@@ -72,114 +35,6 @@ typedef enum
     AWB_STATS_OUTDOOR,
     AWB_STATS_MAX_LIGHT
 } chromatix_awb_stats_light_type;
-
-
-typedef struct
-{
-    /* 8-bit, Q0, unsigned */
-    unsigned char y_min;                      // LumaMin
-
-    /* 8-bit, Q0, unsigned */
-    unsigned char y_max;                      // LumaMax
-
-    /* Slope of neutral region line 1 */
-    /* 8-bit, Q4, signed */
-    char m1;                          // Slope1
-
-    /* Slope of neutral region line 2 */
-    /* 8-bit, Q4, signed */
-    char m2;                          // Slope2
-
-    /* Slope of neutral region line 3 */
-    /* 8-bit, Q4, signed */
-    char m3;                          // Slope3
-
-    /* Slope of neutral region line 4 */
-    /* 8-bit, Q4, signed */
-    char m4;                          // Slope4
-
-    /* Cb intercept of neutral region line 1 */
-    /* 12-bit, Q0, signed */
-    short c1;                         // CbOffset1
-
-    /* Cb intercept of neutral region line 2 */
-    /* 12-bit, Q0, signed */
-    short c2;                         // CrOffset2
-
-    /* Cb intercept of neutral region line 3 */
-    /* 12-bit, Q0, signed */
-    short c3;                         // CbOffset3
-
-    /* Cb intercept of neutral region line 4 */
-    /* 12-bit, Q0, signed */
-    short c4;                         // CrOffset4
-} chromatix_wb_exp_stats_type;
-
-/***********************************************************************
-AFD (8K) row sum / column sum stat collection
-************************************************************************/
-//205 mods
-typedef struct
-{
-    int  row_sum_enable;   // 0=disable, 1=enable, default=1
-    float   row_sum_hor_Loffset_ratio;  // default=0;
-    float   row_sum_ver_Toffset_ratio;  //default=0;
-    float   row_sum_hor_Roffset_ratio;  // default=0;
-    float   row_sum_ver_Boffset_ratio;  //default=0;
-    unsigned char   row_sum_V_subsample_ratio; //1 to 4, int
-
-
-    int  col_sum_enable;   // 0=disable, 1=enable, default=0
-    float   col_sum_hor_Loffset_ratio;  //default=0
-    float   col_sum_ver_Toffset_ratio;  // default=0;
-    float   col_sum_hor_Roffset_ratio;  //default=0
-    float   col_sum_ver_Boffset_ratio;  // default=0;
-    unsigned char   col_sum_H_subsample_ratio; //2 to 4, int
-} chromatix_rscs_stat_config_type;
-
-/******************************************************************************
-5x5 ASF data types
-******************************************************************************/
-/* 5 x 5 Adaptive Spatial Filter.
-* There are two components in this filter
-* High Pass Filter (HPF): 5 x 5
-* Low Pass Filter (LPF): 3 x 3
-* HPF can use upto two 5 x 5 filters. The sensor driver chooses to use
-* both or single filter.
-* LPF can be implemented in H/W Luma Filter module .
-*/
-typedef struct
-{
-    short  a11;
-    short  a12;
-    short  a13;
-    short  a14;
-    short  a15;
-
-    short  a21;
-    short  a22;
-    short  a23;
-    short  a24;
-    short  a25;
-
-    short  a31;
-    short  a32;
-    short  a33;
-    short  a34;
-    short  a35;
-
-    short  a41;
-    short  a42;
-    short  a43;
-    short  a44;
-    short  a45;
-
-    short  a51;
-    short  a52;
-    short  a53;
-    short  a54;
-    short  a55;
-} matrix_5_5_type;
 
 typedef enum
 {
@@ -199,57 +54,6 @@ typedef enum
     ASF_MODE_MAX,
     ASF_MODE_INVALID = ASF_MODE_MAX
 } chromatix_asf_mode_type;
-
-//remove from 0x300
-//typedef char   smoothing_filter_type [SMOOTHING_FILTER_SIZE];
-//typedef char   laplacian_filter_type [LAPLACIAN_FILTER_SIZE];
-typedef float  normalize_factor_type;
-typedef char   filter_threshold_type;
-typedef float  filter_sharpen_degree_type;
-typedef unsigned char  filter_smoothing_degree_type;
-
-typedef struct
-{
-    /* noise level to filter out */
-    filter_threshold_type        lower_threshold;     // LowThresh
-    /* max sharpening limit */
-    filter_threshold_type        upper_threshold;     // UpThresh
-    /* negative limit */
-    filter_threshold_type        negative_threshold;  // NegThresh
-    /* max sharpening limit f2 */
-    filter_threshold_type        upper_threshold_f2;   // UpThreshF2
-    /* negative limit f2 */
-    filter_threshold_type        negative_threshold_f2;// NegThreshF2
-    /* filter1 sharpening degree */
-    filter_sharpen_degree_type   sharpen_degree_f1;   // SharpAmtF1
-    /* filter2 sharpening degree */
-    filter_sharpen_degree_type   sharpen_degree_f2;   // SharpAmtF2
-    /* smoothing degree */
-    filter_smoothing_degree_type smoothing_percent;   // SmoothPct (3x3)
-    filter_smoothing_degree_type smoothing_percent_5x5;  //[205], range= 0-100, default=90
-} asf_setting_type;
-
-typedef struct
-{
-    /* Filter mode, 0 or 1 */
-    unsigned long              filter_mode;                  // FilterMode
-    /* LPF: 3x3 smoothing filter used to calculate luma filter */
- //   smoothing_filter_type smoothing_filter;           // SmoothFltr
-    /* LPF: 3x3 laplacian filter used to calculate luma filter */
- //   laplacian_filter_type laplacian_filter;           // LapFltr
-    /* normalize factor to filter 1 */
-    normalize_factor_type normalize_factor1;          // Normal1
-    /* normalize factor to filter 2 */
-    normalize_factor_type normalize_factor2;          // Normal2
-    /* HPF: 5x5 filter 1 coefficients */
-    matrix_5_5_type filter1;                          // Filter1
-    /* HPF: 5x5 filter 2 coefficients */
-    matrix_5_5_type filter2;                          // Filter2
-    /* extraction factor */
-    unsigned char  extraction_factor;                         // ExtrFactor
-    /* asf settings based on lighting condition */
-    asf_setting_type setting[ASF_MAX_LIGHT];          // Setting
-} chromatix_asf_5_5_type;
 
 typedef enum
 {
@@ -828,8 +632,8 @@ typedef struct
   float skin_color_boost_factor;
   float min_face_content_threshold;
   float max_face_content_threshold;
-  filter_sharpen_degree_type  soft_focus_degree_7_7;
-  filter_sharpen_degree_type  soft_focus_degree_5_5;
+  float  soft_focus_degree_7_7;
+  float  soft_focus_degree_5_5;
   float aggressiveness;
   unsigned char ui_portrait_display_th;
 } portrait_scene_detect_type;
@@ -1622,7 +1426,7 @@ typedef struct
 
     chromatix_asf_5_5_type                 asf_5_5;                             // SnapshotFilter
     /* soft_focus_degree */
-    filter_sharpen_degree_type             soft_focus_degree_5_5;                   // SoftFocusDegree
+    float             soft_focus_degree_5_5;                   // SoftFocusDegree
 
 
     float asf_5_5_sharp_min_ds_factor; //default 0.5
@@ -1639,7 +1443,7 @@ typedef struct
 
     chromatix_asf_7_7_type                 asf_7_7;                             // SnapshotFilter
     /* soft_focus_degree */
-    filter_sharpen_degree_type             soft_focus_degree_7_7;                   // SoftFocusDegree
+    float             soft_focus_degree_7_7;                   // SoftFocusDegree
 
     float asf_7_7_sharp_min_ds_factor; //default 0.5
     float asf_7_7_sharp_max_ds_factor; //default 4.0

@@ -4,12 +4,11 @@
 
 #include "chromatix-test.h"
 
-
-
 int main(int argc, char **argv) {
 
-	void* chromatix_handle = dlopen("./libchromatix_imx214_snapshot.so",
-	RTLD_NOW);
+	void* chromatix_handle = dlopen(
+			"/system/vendor/lib/libchromatix_imx214_snapshot.so",
+			RTLD_NOW);
 	if (chromatix_handle == NULL) {
 		printf("ERROR:%s:dlopen\n", dlerror());
 		return -1;
@@ -25,7 +24,7 @@ int main(int argc, char **argv) {
 	chromatix_parms_type * bb = open_lib();
 
 	printf("0x%hx,\n", bb->chromatix_version);
-	printf("%hd,\n", bb->is_compressed);
+	printf("%hhu,\n", bb->is_compressed);
 	printf("%hd,\n", bb->revision_number);
 
 	chromatix_VFE_type vfe_type = bb->chromatix_VFE;
@@ -35,7 +34,158 @@ int main(int argc, char **argv) {
 
 	return 0;
 }
+void print_chromatix_CCT_trigger_type(chromatix_CCT_trigger_type a) {
+	printf("{\n");
+	print_unsigned_long(a.CCT_start);
+	print_unsigned_long(a.CCT_end);
+	printf("},\n");
+}
 
+void print_unsigned_long(unsigned long a) {
+	printf("%lu,\n", a);
+}
+
+void print_unsigned_short(unsigned short a) {
+	printf("%hd,\n", a);
+}
+void print_unsigned_char(unsigned char a) {
+	printf("%hhu,\n", a);
+}
+void print_unsigned_int(unsigned int a) {
+	printf("%u,\n", a);
+}
+void print_long(long a) {
+	printf("%ld,\n", a);
+}
+
+void print_short(short a) {
+	printf("%hd,\n", a);
+}
+void print_char(char a) {
+	printf("%hhu,\n", a);
+}
+void print_int(int a) {
+	printf("%d,\n", a);
+}
+void print_float(float a) {
+	printf("%f", a);
+	printf("f,\n");
+}
+void print_chromatix_asf_7_7_type(chromatix_asf_7_7_type a) {
+	printf("{\n");
+	print_unsigned_char(a.asf_en);
+	for (int i = 0; i < ASF_7x7_MAX_LIGHT; i++) {
+		printf("[\n");
+		print_int(a.sp[i]);
+		printf("]\n");
+	}
+	print_unsigned_char(a.en_sp_eff);
+	print_unsigned_char(a.neg_abs_y1);
+	for (int i = 0; i < 3; i++) {
+		printf("[\n");
+		print_int(a.nz[i]);
+		printf("]\n");
+	}
+	printf("},\n");
+}
+void print_chromatix_asf_5_5_type(chromatix_asf_5_5_type a) {
+	printf("{\n");
+	print_unsigned_long(a.filter_mode);
+	print_float(a.normalize_factor1);
+	print_float(a.normalize_factor2);
+	print_matrix_5_5_type(a.filter1);
+	print_matrix_5_5_type(a.filter2);
+	print_unsigned_char(a.extraction_factor);
+	for (int i = 0; i < ASF_MAX_LIGHT; i++) {
+		printf("[\n");
+		print_asf_setting_type(a.setting[i]);
+		printf("]\n");
+	}
+	printf("},\n");
+}
+void print_asf_setting_type(asf_setting_type a) {
+	printf("{\n");
+	print_char(a.lower_threshold);
+	print_char(a.upper_threshold);
+	print_char(a.negative_threshold);
+	print_char(a.upper_threshold_f2);
+	print_char(a.negative_threshold_f2);
+	print_float(a.sharpen_degree_f1);
+	print_float(a.sharpen_degree_f2);
+	print_unsigned_char(a.smoothing_percent);
+	print_unsigned_char(a.smoothing_percent_5x5);
+	printf("},\n");
+}
+void print_matrix_5_5_type(matrix_5_5_type a) {
+	printf("{\n");
+	print_short(a.a11);
+	print_short(a.a12);
+	print_short(a.a13);
+	print_short(a.a14);
+	print_short(a.a15);
+
+	print_short(a.a21);
+	print_short(a.a22);
+	print_short(a.a23);
+	print_short(a.a24);
+	print_short(a.a25);
+
+	print_short(a.a31);
+	print_short(a.a32);
+	print_short(a.a33);
+	print_short(a.a34);
+	print_short(a.a35);
+
+	print_short(a.a41);
+	print_short(a.a42);
+	print_short(a.a43);
+	print_short(a.a44);
+	print_short(a.a45);
+
+	print_short(a.a51);
+	print_short(a.a52);
+	print_short(a.a53);
+	print_short(a.a54);
+	print_short(a.a55);
+	printf("},\n");
+}
+void print_chromatix_rscs_stat_config_type(chromatix_rscs_stat_config_type a) {
+	printf("{\n");
+	print_int(a.row_sum_enable);
+	print_float(a.row_sum_hor_Loffset_ratio);
+	print_float(a.row_sum_ver_Toffset_ratio);
+	print_float(a.row_sum_hor_Roffset_ratio);
+	print_float(a.row_sum_ver_Boffset_ratio);
+	print_unsigned_char(a.row_sum_V_subsample_ratio);
+	print_int(a.col_sum_enable);
+	print_float(a.col_sum_hor_Loffset_ratio);
+	print_float(a.col_sum_ver_Toffset_ratio);
+	print_float(a.col_sum_hor_Roffset_ratio);
+	print_float(a.col_sum_ver_Boffset_ratio);
+	print_unsigned_char(a.col_sum_H_subsample_ratio);
+	printf("},\n");
+}
+void print_chromatix_wb_exp_stats_type(chromatix_wb_exp_stats_type a) {
+	printf("{\n");
+	print_unsigned_char(a.y_min);
+	print_unsigned_char(a.y_max);
+	print_char(a.m1);
+	print_char(a.m2);
+	print_char(a.m3);
+	print_char(a.m4);
+	print_short(a.c1);
+	print_short(a.c2);
+	print_short(a.c3);
+	print_short(a.c4);
+	printf("},\n");
+}
+void print_chromatix_black_level_offset_type(
+		chromatix_black_level_offset_type a) {
+	printf("{\n");
+	print_unsigned_short(a.even_columns);
+	print_unsigned_short(a.odd_columns);
+	printf("},\n");
+}
 void print_chromatix_VFE_type(chromatix_VFE_type vfe_type) {
 	printf("{\n");
 
@@ -47,7 +197,7 @@ void print_chromatix_VFE_type(chromatix_VFE_type vfe_type) {
 			vfe_type.chromatix_channel_balance_gains;
 	print_chromatix_channel_balance_gains_type(chromatix_channel_balance_gains);
 
-	chromatix_ABF2_type chromatix_ABF2 =  vfe_type.chromatix_ABF2;
+	chromatix_ABF2_type chromatix_ABF2 = vfe_type.chromatix_ABF2;
 	print_chromatix_ABF2_type(chromatix_ABF2);
 
 	chromatix_BPC_type chromatix_BPC;
@@ -70,12 +220,11 @@ void print_chromatix_VFE_type(chromatix_VFE_type vfe_type) {
 }
 
 /************ chromatix_ABF2_type  *********/
-void print_chromatix_ABF2_type(chromatix_ABF2_type chromatix_ABF2){
+void print_chromatix_ABF2_type(chromatix_ABF2_type chromatix_ABF2) {
 
 }
 
 /************ chromatix_ABF2_type  *********/
-
 
 /************ chromatix_channel_balance_gains_type  *********/
 void print_chromatix_channel_balance_gains_type(
@@ -97,24 +246,21 @@ void print_chromatix_channel_balance_gains_type(
 void print_chromatix_black_level_type(
 		chromatix_black_level_type chromatix_black_level) {
 	printf("{\n");
-	printf("%hd,\n", chromatix_black_level.control_blk);
+	print_unsigned_char(chromatix_black_level.control_blk);
 
 	trigger_point_type blk_lowlight_trigger =
 			chromatix_black_level.blk_lowlight_trigger;
-	print_trigger_point_type(
-			blk_lowlight_trigger);
+	print_trigger_point_type(blk_lowlight_trigger);
 
 	printf("%hd,\n", chromatix_black_level.max_blk_increase);
 
 	chromatix_4_channel_black_level normal_light_4_channel =
 			chromatix_black_level.normal_light_4_channel;
-	print_chromatix_4_channel_black_level(
-			normal_light_4_channel);
+	print_chromatix_4_channel_black_level(normal_light_4_channel);
 
 	printf("},\n");
 }
-void print_trigger_point_type(
-		trigger_point_type blk_lowlight_trigger) {
+void print_trigger_point_type(trigger_point_type blk_lowlight_trigger) {
 	printf("{\n");
 	printf("%f", blk_lowlight_trigger.gain_start);
 	printf("f,\n");
@@ -127,12 +273,11 @@ void print_trigger_point_type(
 void print_chromatix_4_channel_black_level(
 		chromatix_4_channel_black_level normal_light_4_channel) {
 	printf("{");
-	printf("%hd,", normal_light_4_channel.black_even_row_even_col);
-	printf("%hd,", normal_light_4_channel.black_even_row_odd_col);
-	printf("%hd,", normal_light_4_channel.black_odd_row_even_col);
-	printf("%hd,", normal_light_4_channel.black_odd_row_odd_col);
+	print_unsigned_short(normal_light_4_channel.black_even_row_even_col);
+	print_unsigned_short(normal_light_4_channel.black_even_row_odd_col);
+	print_unsigned_short(normal_light_4_channel.black_odd_row_even_col);
+	print_unsigned_short(normal_light_4_channel.black_odd_row_odd_col);
 	printf("},\n");
 }
 /************ chromatix_black_level_type  *********/
-
 
