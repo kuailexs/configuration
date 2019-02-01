@@ -18,23 +18,6 @@
 DATA TYPES
 ============================================================================*/
 
-typedef unsigned short chromatix_version_type;
-
-typedef unsigned short chromatix_number_elements_type;
-
-/// Tuning Control Flag. 0 is Lux Index based, 1 is Gain Based.
-typedef unsigned char tuning_control_type;
-
-/// This type holds both luma index and gain based trigger points to be
-/// used in configuration of VFE blocks.
-typedef struct
-{
-    float gain_start;      ///< Gain based trigger point.
-    float gain_end;        ///< Gain based end point.
-    long lux_index_start; ///< Lux index based trigger point.
-    long lux_index_end;   ///< Lux index based end point.
-} trigger_point_type;
-
 /*****************************************/
 //0x207  trigger pt for CCT
 /*****************************************/
@@ -731,7 +714,7 @@ typedef struct
 typedef struct
 {
     int wavelet_enable_index;
-    tuning_control_type control_denoise;
+    unsigned char control_denoise;
     ReferenceNoiseProfile_type noise_profile[NUM_GRAY_PATCHES];
 } wavelet_denoise_type;
 
@@ -938,7 +921,7 @@ typedef struct
 {
     //AWB
     int AWB_purple_prevent_enable; //0x207, enable the feature
-    tuning_control_type     control_purple_prevent;//default 0 for lux_index
+    unsigned char     control_purple_prevent;//default 0 for lux_index
     trigger_point_type      purple_prevent_trigger;
     float purple_sky_prevention_bg_threshold ;//range from 0 to 2.0, default is the BG ratio of D50
 } AWB_purple_prevent_type;
@@ -1498,7 +1481,7 @@ typedef struct
 /**************************************************************************************/
 typedef struct
 {
-    tuning_control_type     control_blk;//default 0 for lux_index
+    unsigned char     control_blk;//default 0 for lux_index
     trigger_point_type          blk_lowlight_trigger;
     unsigned short                max_blk_increase; //default 15*16 in 12bit
     chromatix_4_channel_black_level        normal_light_4_channel;             // NormalLight4Channel
@@ -1506,7 +1489,7 @@ typedef struct
 
 typedef struct
 {
-    tuning_control_type     control_abf2; //default 1
+    unsigned char     control_abf2; //default 1
     unsigned short abf2_enable_index;
     trigger_point_type  abf2_low_light_trigger;
     trigger_point_type  abf2_bright_light_trigger;
@@ -1517,7 +1500,7 @@ typedef struct
 
 typedef struct
 {
-    tuning_control_type     control_bpc; //default 0
+    unsigned char     control_bpc; //default 0
     trigger_point_type        bpc_lowlight_trigger;
 
     //204
@@ -1529,7 +1512,7 @@ typedef struct
     bpc_4_offset_type     bpc_4_offset[BPC_MAX_LIGHT];
 
     // 0x207 bad pixel cluster params
-    tuning_control_type     control_bcc; //default 0
+    unsigned char     control_bcc; //default 0
     trigger_point_type          bcc_lowlight_trigger;
 
     unsigned char                              bcc_Fmin;
@@ -1543,7 +1526,7 @@ typedef struct
 typedef struct
 {
 //0x207 demosaic3
-    tuning_control_type control_demosaic3;
+    unsigned char control_demosaic3;
     trigger_point_type demosaic3_trigger_lowlight;
     demosaic3_LUT_type demosaic3_LUT;
 
@@ -1554,13 +1537,13 @@ typedef struct
 typedef struct
 {
      //0x207 chroma filter
-    tuning_control_type control_chroma_filter;
+    unsigned char control_chroma_filter;
     trigger_point_type chroma_filter_trigger_lowlight;
     int chroma_filter_enable_index;
     Chroma_filter_type chroma_filter[LOWLIGHT_MAX_LIGHT]; //2 light condition
 
     //0x207 luma filter , 0x300 new type
-    tuning_control_type control_LF;
+    unsigned char control_LF;
     trigger_point_type  LF_low_light_trigger;
     trigger_point_type  LF_bright_light_trigger;
     int LF_enable_index;
@@ -1571,7 +1554,7 @@ typedef struct
 
 typedef struct
 {
-    tuning_control_type     control_cc;//default 0 for lux_index
+    unsigned char     control_cc;//default 0 for lux_index
     trigger_point_type          cc_trigger;
     chromatix_CCT_trigger_type CC_A_trigger;
     chromatix_CCT_trigger_type CC_Daylight_trigger;
@@ -1595,7 +1578,7 @@ typedef struct
 
 typedef struct
 {
-    tuning_control_type     control_gamma;//default 0 for lux_index
+    unsigned char     control_gamma;//default 0 for lux_index
 
     trigger_point_type          gamma_lowlight_trigger;
     trigger_point_type          gamma_outdoor_trigger;
@@ -1609,7 +1592,7 @@ typedef struct
 
 typedef struct
 {
-    tuning_control_type     control_cv;//default 0 for lux_index
+    unsigned char     control_cv;//default 0 for lux_index
     trigger_point_type          cv_trigger;
     chromatix_CCT_trigger_type CV_A_trigger;
     chromatix_CCT_trigger_type CV_Daylight_trigger;
@@ -1632,7 +1615,7 @@ typedef struct
 
 typedef struct
 {
-    tuning_control_type control_asf_5X5; //DEFAULT 1 GAIN default value for VF and snapshot is same
+    unsigned char control_asf_5X5; //DEFAULT 1 GAIN default value for VF and snapshot is same
 
     trigger_point_type          asf_5x5_lowlight_trigger;
     trigger_point_type          asf_5x5_outdoor_trigger;
@@ -1649,7 +1632,7 @@ typedef struct
 
 typedef struct
 {
-    tuning_control_type control_asf_7x7; //DEFAULT 1 GAIN default value for VF and snapshot is same
+    unsigned char control_asf_7x7; //DEFAULT 1 GAIN default value for VF and snapshot is same
 
     trigger_point_type          asf_7x7_lowlight_trigger;
     trigger_point_type          asf_7x7_brightlight_trigger;
@@ -1666,7 +1649,7 @@ typedef struct
 typedef struct
 {
     int LA_enable; //0x207 default false
-    tuning_control_type					 control_la;// 205 default 0 for lux_index  //new205 mods
+    unsigned char					 control_la;// 205 default 0 for lux_index  //new205 mods
     trigger_point_type                     la_brightlight_trigger;
 
     LA_args_type   LA_config;  //this is for indoor
@@ -1677,7 +1660,7 @@ typedef struct
 
 typedef struct
 {
-    tuning_control_type					 control_cs;//default 0 for lux_index
+    unsigned char					 control_cs;//default 0 for lux_index
     trigger_point_type                     cs_lowlight_trigger;
     cs_luma_threshold_type                 cs_lowlight;
     cs_luma_threshold_type                 cs_normal;
@@ -1699,7 +1682,7 @@ typedef struct
 typedef struct
 {
     int temporal_denoise_enable_index;
-    tuning_control_type control_temporal_denoise;
+    unsigned char control_temporal_denoise;
     reference_temporal_noise_profile_type temporal_noise_profile[NUM_GRAY_PATCHES];
     int algorithm_select; // default 1, 0: power function, 1: Gaussian, 2: local linear minimum mean-squared error
 } chromatix_temporal_denoise_type;
@@ -1715,7 +1698,7 @@ typedef struct
 {
     int                   sce_enable;
     //0x207
-    tuning_control_type control_SCE;
+    unsigned char control_SCE;
     trigger_point_type SCE_trigger;   //under lowlight reduce SCE mapping to none
     chromatix_CCT_trigger_type SCE_A_trigger;
     chromatix_CCT_trigger_type SCE_D65_trigger;
@@ -1841,7 +1824,7 @@ unsigned char soft_threshold_span;
 typedef struct
 {
 
-tuning_control_type     control_CAC;//default 0 for lux_index
+unsigned char     control_CAC;//default 0 for lux_index
 trigger_point_type          CAC_lowlight_trigger;
 chroma_aliasing_correction_type CAC_lowlight;
 chroma_aliasing_correction_type CAC_normal;
@@ -2065,7 +2048,7 @@ typedef struct
 {
 //common structs
 
-    chromatix_version_type chromatix_version;
+	unsigned short chromatix_version;
     unsigned char is_compressed;
     unsigned short revision_number;
 
