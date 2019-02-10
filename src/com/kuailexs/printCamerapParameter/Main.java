@@ -19,7 +19,9 @@ public class Main {
 	static List<String> listLine = new ArrayList<>();
 
 	public static void main(String[] args) throws IOException {
-		String chromatix_h_Path = "C:/Users/dhl/workspace/chromatix/src/chromatix/chromatix.h";
+		String chromatix_h_Path = "/work/LineageOS/vendor/qcom/proprietary/"
+				+ "mm-camera/mm-camera2/media-controller/modules/sensors/"
+				+ "chromatix/0301/chromatix_common.h";
 
 		BufferedReader br = new BufferedReader(new FileReader(chromatix_h_Path));
 		List<String> list = bufferedReaderToStringList(br);
