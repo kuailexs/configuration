@@ -1732,7 +1732,7 @@ void print_chromatix_VFE_type(chromatix_VFE_type a) {
 }
 
 void print_chromatix_parms_type(chromatix_parms_type a) {
-    printf("{");
+    //printf("{");
     print_chromatix_version_type(a.chromatix_version);
     print_unsigned_char(a.is_compressed);
     print_unsigned_short(a.revision_number);
@@ -1745,7 +1745,185 @@ void print_chromatix_parms_type(chromatix_parms_type a) {
     print_ASD_struct_type(a.ASD_algo_data);
     print_chromatix_ZSL_type(a.chromatix_ZSL);
     print_chromatix_post_processing_type(a.chromatix_post_processing);
+    //printf("},\n");
+}
+
+
+void print_chromatix_linearization_type(chromatix_linearization_type a) {
+    printf("{");
+    printf("{");
+    for(int i = 0 ; i < 8 ; i++) {
+        print_unsigned_short(a.r_lut_p[i]);
+    }
+    printf("},");
+    printf("{");
+    for(int i = 0 ; i < 9 ; i++) {
+        print_unsigned_short(a.r_lut_base[i]);
+    }
+    printf("},");
+    printf("{");
+    for(int i = 0 ; i < 9 ; i++) {
+        print_float(a.r_lut_delta[i]);
+    }
+    printf("},");
+    printf("{");
+    for(int i = 0 ; i < 8 ; i++) {
+        print_unsigned_short(a.gr_lut_p[i]);
+    }
+    printf("},");
+    printf("{");
+    for(int i = 0 ; i < 9 ; i++) {
+        print_unsigned_short(a.gr_lut_base[i]);
+    }
+    printf("},");
+    printf("{");
+    for(int i = 0 ; i < 9 ; i++) {
+        print_float(a.gr_lut_delta[i]);
+    }
+    printf("},");
+    printf("{");
+    for(int i = 0 ; i < 8 ; i++) {
+        print_unsigned_short(a.gb_lut_p[i]);
+    }
+    printf("},");
+    printf("{");
+    for(int i = 0 ; i < 9 ; i++) {
+        print_unsigned_short(a.gb_lut_base[i]);
+    }
+    printf("},");
+    printf("{");
+    for(int i = 0 ; i < 9 ; i++) {
+        print_float(a.gb_lut_delta[i]);
+    }
+    printf("},");
+    printf("{");
+    for(int i = 0 ; i < 8 ; i++) {
+        print_unsigned_short(a.b_lut_p[i]);
+    }
+    printf("},");
+    printf("{");
+    for(int i = 0 ; i < 9 ; i++) {
+        print_unsigned_short(a.b_lut_base[i]);
+    }
+    printf("},");
+    printf("{");
+    for(int i = 0 ; i < 9 ; i++) {
+        print_float(a.b_lut_delta[i]);
+    }
+    printf("},");
     printf("},\n");
+}
+
+void print_mesh_rolloff_array_type(mesh_rolloff_array_type a) {
+    printf("{");
+    print_unsigned_short(a.mesh_rolloff_table_size);
+    printf("{");
+    for(int i = 0 ; i < MESH_ROLLOFF_SIZE ; i++) {
+        print_float(a.r_gain[i]);
+    }
+    printf("},");
+    printf("{");
+    for(int i = 0 ; i < MESH_ROLLOFF_SIZE ; i++) {
+        print_float(a.gr_gain[i]);
+    }
+    printf("},");
+    printf("{");
+    for(int i = 0 ; i < MESH_ROLLOFF_SIZE ; i++) {
+        print_float(a.gb_gain[i]);
+    }
+    printf("},");
+    printf("{");
+    for(int i = 0 ; i < MESH_ROLLOFF_SIZE ; i++) {
+        print_float(a.b_gain[i]);
+    }
+    printf("},");
+    printf("},\n");
+}
+
+void print_chromatix_L_type(chromatix_L_type a) {
+    printf("{");
+    print_tuning_control_type(a.control_linearization);
+    print_trigger_point_type(a.linearization_lowlight_trigger);
+    print_chromatix_CCT_trigger_type(a.linear_A_trigger);
+    print_chromatix_CCT_trigger_type(a.linear_D65_trigger);
+    print_chromatix_linearization_type(a.linear_table_A_lowlight);
+    print_chromatix_linearization_type(a.linear_table_A_normal);
+    print_chromatix_linearization_type(a.linear_table_TL84_lowlight);
+    print_chromatix_linearization_type(a.linear_table_TL84_normal);
+    print_chromatix_linearization_type(a.linear_table_Day_lowlight);
+    print_chromatix_linearization_type(a.linear_table_Day_normal);
+    printf("},\n");
+}
+
+void print_chromatix_rolloff_type(chromatix_rolloff_type a) {
+    printf("{");
+    print_tuning_control_type(a.control_rolloff);
+    print_trigger_point_type(a.rolloff_lowlight_trigger);
+    print_chromatix_CCT_trigger_type(a.rolloff_A_trigger);
+    print_chromatix_CCT_trigger_type(a.rolloff_D65_trigger);
+    print_float(a.rolloff_LED_start);
+    print_float(a.rolloff_LED_end);
+    print_float(a.rolloff_Strobe_start);
+    print_float(a.rolloff_Strobe_end);
+    printf("{");
+    for(int i = 0 ; i < ROLLOFF_MAX_LIGHT ; i++) {
+        print_mesh_rolloff_array_type(a.chromatix_mesh_rolloff_table[i]);
+    }
+    printf("},");
+    printf("{");
+    for(int i = 0 ; i < ROLLOFF_MAX_LIGHT ; i++) {
+        print_mesh_rolloff_array_type(a.chromatix_mesh_rolloff_table_lowlight[i]);
+    }
+    printf("},");
+    printf("{");
+    for(int i = 0 ; i < ROLLOFF_MAX_LIGHT ; i++) {
+        print_mesh_rolloff_array_type(a.chromatix_mesh_rolloff_table_golden_module[i]);
+    }
+    printf("},");
+    print_mesh_rolloff_array_type(a.chromatix_mesh_rolloff_table_LED);
+    print_mesh_rolloff_array_type(a.chromatix_mesh_rolloff_table_Strobe);
+    printf("},\n");
+}
+
+void print_chromatix_LA_special_effects_type(chromatix_LA_special_effects_type a) {
+    printf("{");
+    printf("{");
+    for(int i = 0 ; i < 64 ; i++) {
+        print_float(a.LA_LUT_backlit[i]);
+    }
+    printf("},");
+    printf("{");
+    for(int i = 0 ; i < 64 ; i++) {
+        print_float(a.LA_LUT_solarize[i]);
+    }
+    printf("},");
+    printf("{");
+    for(int i = 0 ; i < 64 ; i++) {
+        print_float(a.LA_LUT_posterize[i]);
+    }
+    printf("},");
+    printf("{");
+    for(int i = 0 ; i < 64 ; i++) {
+        print_float(a.LA_LUT_blackboard[i]);
+    }
+    printf("},");
+    printf("{");
+    for(int i = 0 ; i < 64 ; i++) {
+        print_float(a.LA_LUT_whiteboard[i]);
+    }
+    printf("},");
+    printf("},\n");
+}
+
+void print_chromatix_VFE_common_type(chromatix_VFE_common_type a) {
+    //printf("{");
+    print_chromatix_version_type(a.chromatix_version);
+    print_unsigned_char(a.is_compressed);
+    print_unsigned_short(a.revision_number);
+    print_chromatix_L_type(a.chromatix_L);
+    print_chromatix_rolloff_type(a.chromatix_rolloff);
+    print_chromatix_LA_special_effects_type(a.chromatix_LA_special_effects);
+    //printf("},\n");
 }
 
 
