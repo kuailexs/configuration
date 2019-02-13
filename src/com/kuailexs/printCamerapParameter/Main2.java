@@ -146,7 +146,7 @@ public class Main2 {
 						" *                      INCLUDE FILES\n" + 
 						" *===========================================================================*/\n" + 
 						"#include \"chromatix.h\"\n" + 
-						"#include \"sensor_dbg.h\"\n" + 
+						"#include \"camera_dbg.h\"\n" + 
 						"\n" + 
 						"static chromatix_parms_type chromatix_"+dirName1+"_parms = {\n" + 
 						"#include \""+filename+"\"\n" + 
@@ -159,7 +159,7 @@ public class Main2 {
 						" *==========================================================================*/\n" + 
 						"void *load_chromatix(void)\n" + 
 						"{\n" + 
-						"  SLOW(\"chromatix ptr %p\", &chromatix_"+dirName1+"_parms);\n" + 
+						"  CDBG(\"%s:%d%d\\n\", __func__, __LINE__);\n" + 
 						"  return &chromatix_"+dirName1+"_parms;\n" + 
 						"}";
 			}
